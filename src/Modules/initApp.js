@@ -5,6 +5,7 @@ config({ path: path.resolve("config/.env") });
 import { AppError, globalErrorHandel } from "../Utils/errorHandling.js";
 import userRouter from "./user/user.routes.js";
 import noteRouter from './note/note.routes.js';
+import cors from "cors"
 const port = process.env.PORT || 3001;
 
 export const initApp = (app, express) => {
@@ -12,6 +13,7 @@ export const initApp = (app, express) => {
     app.get("/", (req, res, next) => {
         return res.status(200).json({ msg: "welcome in my app" })
     })
+    app.use(cors())
     app.use(express.json());
 
     app.use("/api/v1/users", userRouter);

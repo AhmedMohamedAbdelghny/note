@@ -40,7 +40,7 @@ export const deletenote = asyncHandler(async (req, res, next) => {
     if (!note) {
         return next(new AppError("note not exist or you not owner", 402))
     }
-    res.status(201).json({ msg: "done" })
+    res.status(200).json({ msg: "done" })
 })
 
 // *******************************getnotes*********************************//

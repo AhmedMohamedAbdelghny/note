@@ -18,10 +18,10 @@ export const updatenote = asyncHandler(async (req, res, next) => {
     const { id } = req.params
     const note = await noteModel.findOne({ _id: id, createdBy: req.user._id })
     if (!note) {
-        return next(new AppError("note not exist", 401))
+        return next(new AppError("note not exist or you not owner", 401))
     }
     if (req.body.title) {
-        if (await noteModel.find({ title: req.body.title, createdBy: req.user._id })) {
+        if (await noteModel.findOne({ title: req.body.title, createdBy: req.user._id })) {
             return next(new AppError("note already exist", 401))
         }
         note.title = req.body.title

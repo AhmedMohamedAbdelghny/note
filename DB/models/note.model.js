@@ -4,9 +4,7 @@ const noteSchema = new Schema(
   {
     title: {
       type: String,
-      required: [true, "title is required"],
-      unique: [true, "title is unique"],
-      lowercase: true
+      required: [true, "title is required"]
     },
     content: {
       type: String,

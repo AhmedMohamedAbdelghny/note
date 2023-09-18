@@ -5,10 +5,6 @@ import { AppError, asyncHandler } from "../../Utils/errorHandling.js";
 // *******************************createnote*********************************//
 export const createnote = asyncHandler(async (req, res, next) => {
     const { title, content } = req.body
-    const exist = await noteModel.findOne({ title: title.toLowerCase() })
-    if (exist) {
-        return next(new AppError("note already exist", 401))
-    }
     const note = await noteModel.create({ title, content, createdBy: req.user._id })
     note ? res.status(201).json({ msg: "done", note }) : next(new AppError("fail", 400))
 })
@@ -21,12 +17,6 @@ export const updatenote = asyncHandler(async (req, res, next) => {
         return next(new AppError("note not exist", 401))
     }
     if (req.body.title) {
-        if (note.title == req.body.title.toLowerCase()) {
-            return next(new AppError("title match old note title plz change it", 401))
-        }
-        if (await noteModel.findOne({ title: req.body.title.toLowerCase() })) {
-            return next(new AppError("note already exist", 401))
-        }
         note.title = req.body.title
     }
     if (req.body.content) {

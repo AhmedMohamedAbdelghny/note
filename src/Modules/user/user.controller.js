@@ -12,12 +12,11 @@ export const signUp = asyncHandler(async (req, res, next) => {
     return next(new AppError("email is already exist", 401));
   }
   const hash = bcrypt.hashSync(password, +process.env.saltOrRounds)
-  const user = new userModel({ name, email, password: hash, age, phone })
-  const newuser = await user.save()
-  if (!newuser) {
+  const user = await userModel.create({ name, email, password: hash, age, phone })
+  if (!user) {
     return next(new AppError("fail", 400));
   }
-  res.status(201).json({ msg: "done", newuser })
+  res.status(201).json({ msg: "done", user })
 });
 
 //**************************signIn******************* *//
@@ -32,6 +31,6 @@ export const signIn = asyncHandler(async (req, res, next) => {
     return next(new AppError("invalid password", 401));
   }
   const token = jwt.sign({ email: user.email, id: user._id }, process.env.signature, { expiresIn: "1year" })
-  res.status(201).json({ msg: "done", token })
+  res.status(200).json({ msg: "done", token })
 });
 
